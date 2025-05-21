@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.generation.lojagames.model.Categoria;
 import com.generation.lojagames.repository.CategoriaRepository;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/categorias")
 @CrossOrigin("*")
@@ -27,8 +29,8 @@ public class CategoriaController {
 	    private CategoriaRepository categoriaRepository;
 
 	    @GetMapping
-	    public List<Categoria> getAll() {
-	        return categoriaRepository.findAll();
+	    public ResponseEntity<List<Categoria>> getAll() {
+	        return ResponseEntity.ok(categoriaRepository.findAll());
 	    }
 
 	    @GetMapping("/{id}")
@@ -39,19 +41,29 @@ public class CategoriaController {
 	    }
 
 	    @PostMapping
-	    public ResponseEntity<Categoria> post(@RequestBody Categoria categoria) {
-	        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaRepository.save(categoria));
-	    }
+		public ResponseEntity<Categoria> postCategoria(@Valid @RequestBody Categoria categoria){
+			
+			return ResponseEntity.status(HttpStatus.CREATED).body(categoriaRepository.save(categoria));
+		}
+		
+		@PutMapping
+		public ResponseEntity<Categoria> putCategoria(@Valid @RequestBody Categoria categoria) {
+						
+			return categoriaRepository.findById(categoria.getId())
+					.map(resposta -> ResponseEntity.ok().body(categoriaRepository.save(categoria)))
+					.orElse(ResponseEntity.notFound().build());
 
-	    @PutMapping
-	    public ResponseEntity<Categoria> put(@RequestBody Categoria categoria) {
-	        return ResponseEntity.ok(categoriaRepository.save(categoria));
-	    }
+		}
 
-	    @DeleteMapping("/{id}")
-	    public void delete(@PathVariable Long id) {
-	        categoriaRepository.deleteById(id);
-	    }
+		@DeleteMapping("/{id}")
+		public ResponseEntity<?> deleteCategoria(@PathVariable Long id) {
+			
+			return categoriaRepository.findById(id)
+					.map(resposta -> {
+						categoriaRepository.deleteById(id);
+						return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+					})
+					.orElse(ResponseEntity.notFound().build());}
 		
 	
 }

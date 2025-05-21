@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,9 +36,9 @@ public class Categoria {
 	@Pattern(regexp = "^[^0-9].*", message = "A descrição não pode ser apenas numérica")
 	private String descricao;
 	
-	@OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("categoria")
-    private List<Produto> produtos;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "categoria", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("categoria")
+	private List<Produto> produto;
 	
 	
 	public Long getId() {
@@ -71,12 +72,12 @@ public class Categoria {
 
 
 	public List<Produto> getProdutos() {
-		return produtos;
+		return produto;
 	}
 
 
 	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+		this.produto = produtos;
 	}
 
 

@@ -1,5 +1,6 @@
 package com.generation.lojagames.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.lojagames.model.Produto;
+import com.generation.lojagames.repository.CategoriaRepository;
 import com.generation.lojagames.repository.ProdutoRepository;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/produtos")
@@ -25,11 +29,19 @@ public class ProdutoController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+    
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
     @GetMapping
-    public List<Produto> getAll() {
-        return produtoRepository.findAll();
+    public ResponseEntity<List<Produto>> getAll() {
+        return ResponseEntity.ok(produtoRepository.findAll());
     }
+    
+    @GetMapping("/nome/{nome}")
+	public ResponseEntity<List<Produto>> getByNome(@PathVariable String nome){
+		return ResponseEntity.ok(produtoRepository.findAllByNomeContainingIgnoreCase(nome));
+	}
 
     @GetMapping("/{id}")
     public ResponseEntity<Produto> getById(@PathVariable Long id) {
@@ -39,18 +51,47 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<Produto> post(@RequestBody Produto produto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
+    public ResponseEntity<Produto> postProduto(@Valid @RequestBody Produto produto){
+		return categoriaRepository.findById(produto.getCategoria().getId())
+				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto)))
+				.orElse(ResponseEntity.badRequest().build());
     }
 
     @PutMapping
-    public ResponseEntity<Produto> put(@RequestBody Produto produto) {
-        return ResponseEntity.ok(produtoRepository.save(produto));
-    }
+    public ResponseEntity<Produto> putProduto(@Valid @RequestBody Produto produto) {
+		
+		if (produtoRepository.existsById(produto.getId())){
 
+			return categoriaRepository.findById(produto.getCategoria().getId())
+					.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto)))
+					.orElse(ResponseEntity.badRequest().build());
+		}		
+		
+		return ResponseEntity.notFound().build();
+
+	}
+    
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        produtoRepository.deleteById(id);
-    }
+    public ResponseEntity<?> deleteProduto(@PathVariable Long id) {
+		
+		return produtoRepository.findById(id)
+				.map(resposta -> {
+					produtoRepository.deleteById(id);
+					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+				})
+				.orElse(ResponseEntity.notFound().build());
+	}
+    
+    @GetMapping("/preco_maior/{preco}")
+	public ResponseEntity<List<Produto>> getPrecoMaiorQue(@PathVariable BigDecimal preco){ 
+		return ResponseEntity.ok(produtoRepository.findByPrecoGreaterThanOrderByPreco(preco));
+	}
+	
+		
+	@GetMapping("/preco_menor/{preco}")
+	public ResponseEntity<List<Produto>> getPrecoMenorQue(@PathVariable BigDecimal preco){ 
+		return ResponseEntity.ok(produtoRepository.findByPrecoLessThanOrderByPrecoDesc(preco));
+	}
+    
 }
 
