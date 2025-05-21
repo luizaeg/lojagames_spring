@@ -22,162 +22,204 @@
  
 <br />
 
-
-Este projeto é um backend de uma loja de games, desenvolvido com **Spring Boot**, utilizando boas práticas de arquitetura com camadas de `model`, `repository` e `controller`.  
-Permite o gerenciamento de **produtos (jogos)** e **categorias**, com relacionamento entre eles, e suporte a preços e imagem dos produtos.
+Claro! Aqui está um modelo de `README.md` para o seu projeto **Loja de Games**, com o mesmo estilo e organização do seu exemplo do Blog Pessoal:
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+````markdown
+## 1. Descrição
 
-- Java 17+
-- Spring Boot
-- Spring Web
-- Spring Data JPA
-- MySQL (ou H2)
-- Insomnia (para testes de API)
-- Lombok (opcional)
-- Git & GitHub
+<br />
 
----
+O **Loja de Games** é uma aplicação backend desenvolvida em Java com Spring Boot, que permite o gerenciamento de jogos (produtos) classificados por categorias.  
+Esse projeto simula uma loja online de games, com foco no aprendizado de construção de APIs RESTful utilizando boas práticas de arquitetura MVC e persistência de dados com JPA.
 
-## 🗃️ Estrutura de Camadas
+Entre os principais recursos que a aplicação oferece, destacam-se:
 
+1. Cadastro, edição e remoção de produtos
+2. Organização dos produtos por categoria
+3. Relacionamento entre categorias e produtos (One-to-Many)
+4. Exibição de produtos com preço e imagem
+5. Testes com ferramentas como Insomnia
+
+<br />
+
+## 2. Sobre esta API
+
+<br />
+
+A API da Loja de Games segue os princípios REST e foi construída com o framework Spring Boot. Os recursos principais são **Produto** e **Categoria**, cada um com seu CRUD completo.
+
+<br />
+
+### 2.1. Principais funcionalidades da API:
+
+<br />
+
+1. Consulta, criação, edição e exclusão de produtos
+2. Cadastro e gerenciamento de categorias
+3. Associação de produtos a categorias
+4. Exibição de detalhes dos produtos, incluindo preço e imagem
+5. Testes e validações realizados via Insomnia
+
+<br />
+
+## 3. Diagrama de Classes
+
+<br />
+
+```mermaid
+classDiagram
+class Produto {
+  - id : Long
+  - nome : String
+  - descricao : String
+  - preco : BigDecimal
+  - imagemUrl : String
+  - categoria : Categoria
+}
+class Categoria {
+  - id : Long
+  - nome : String
+  - descricao : String
+  - produtos : List<Produto>
+}
+Categoria "1" --> "0..*" Produto : possui
+````
+
+<br />
+
+## 4. Diagrama Entidade-Relacionamento (DER)
+
+<br />
+
+```mermaid
+erDiagram
+    tb_categorias ||--o{ tb_produtos : possui
+    tb_categorias {
+        bigint id PK
+        varchar(255) nome
+        varchar(255) descricao
+    }
+    tb_produtos {
+        bigint id PK
+        varchar(255) nome
+        text descricao
+        decimal preco
+        varchar(500) imagem_url
+        bigint categoria_id FK
+    }
 ```
 
-com.seuprojeto.lojagames
-├── controller
-│   └── ProdutoController.java
-│   └── CategoriaController.java
-├── model
-│   └── Produto.java
-│   └── Categoria.java
-├── repository
-│   └── ProdutoRepository.java
-│   └── CategoriaRepository.java
-└── application.properties
+<br />
 
-````
+## 5. Tecnologias utilizadas
 
----
+<br />
 
-## 🛠️ Como rodar o projeto
+| Item                          | Descrição       |
+| ----------------------------- | --------------- |
+| **Linguagem de programação**  | Java            |
+| **Framework**                 | Spring Boot     |
+| **ORM**                       | JPA + Hibernate |
+| **Banco de dados Relacional** | MySQL           |
+| **Documentação**              | SpringDoc       |
+| **Testes de API**             | Insomnia        |
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/lojagames-backend.git
-   cd lojagames-backend
-````
+<br />
 
-2. Configure seu banco de dados MySQL no arquivo `application.properties`:
+## 6. Requisitos
 
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/lojagames
-   spring.datasource.username=seu_usuario
-   spring.datasource.password=sua_senha
-   ```
+<br />
 
-3. Execute o projeto no Spring Tool Suite (STS), Eclipse ou IntelliJ.
+* Java JDK 17+
+* MySQL Server
+* Spring Tool Suite (STS) ou IntelliJ
+* Ferramenta de testes como Insomnia ou Postman
 
----
+<br />
 
-## 🔗 Endpoints da API
+## 7. Como executar o projeto no STS
 
-### 🧩 Categoria
+<br />
 
-| Método | Rota               | Descrição                 |
-| ------ | ------------------ | ------------------------- |
-| GET    | `/categorias`      | Lista todas as categorias |
-| GET    | `/categorias/{id}` | Busca categoria por ID    |
-| POST   | `/categorias`      | Cria nova categoria       |
-| PUT    | `/categorias`      | Atualiza categoria        |
-| DELETE | `/categorias/{id}` | Deleta categoria por ID   |
+### 7.1. Clonar o repositório
 
-### 🕹️ Produto
+```bash
+git clone https://github.com/seu-usuario/lojagames.git
+```
 
-| Método | Rota             | Descrição               |
-| ------ | ---------------- | ----------------------- |
-| GET    | `/produtos`      | Lista todos os produtos |
-| GET    | `/produtos/{id}` | Busca produto por ID    |
-| POST   | `/produtos`      | Cria novo produto       |
-| PUT    | `/produtos`      | Atualiza produto        |
-| DELETE | `/produtos/{id}` | Deleta produto por ID   |
+### 7.2. Importar no STS
 
----
+1. Abra o STS
+2. Vá em **File 🡲 Import...**
+3. Selecione **Existing Projects into Workspace**
+4. Aponte para a pasta onde o repositório foi clonado
+5. Finalize a importação e aguarde o carregamento
 
-## 🧪 Exemplo de Testes no Insomnia
+### 7.3. Configurar o `application.properties`
 
-### ✅ Criar Categoria
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/lojagames
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+spring.jpa.hibernate.ddl-auto=update
+```
 
-**POST** `http://localhost:8082/categorias`
+> 🔁 Altere a porta, se necessário:
+
+```properties
+server.port=8082
+```
+
+### 7.4. Executar a aplicação
+
+* Vá até o **Boot Dashboard**
+* Clique em **Start** para iniciar a aplicação
+* Teste os endpoints via Insomnia
+
+<br />
+
+## 8. Testes com Insomnia
+
+<br />
+
+### Criar uma Categoria
+
+**POST** `/categorias`
 
 ```json
 {
-  "nome": "Aventura",
-  "descricao": "Jogos com exploração e narrativa"
+  "nome": "RPG",
+  "descricao": "Jogos de interpretação de papéis"
 }
 ```
 
----
+### Criar um Produto
 
-### ✅ Criar Produto com Imagem e Preço
-
-**POST** `http://localhost:8082/produtos`
+**POST** `/produtos`
 
 ```json
 {
-  "nome": "The Legend of Zelda: Breath of the Wild",
-  "descricao": "Jogo de mundo aberto com exploração",
-  "preco": 249.90,
-  "imagemUrl": "https://exemplo.com/imagens/zelda.jpg",
+  "nome": "Final Fantasy VII Remake",
+  "descricao": "Remake do clássico RPG",
+  "preco": 299.99,
+  "imagemUrl": "https://exemplo.com/imagens/ff7.jpg",
   "categoria": {
     "id": 1
   }
 }
 ```
 
----
+<br />
 
-## 📷 Exemplo de Resposta
-
-```json
-{
-  "id": 1,
-  "nome": "The Legend of Zelda: Breath of the Wild",
-  "descricao": "Jogo de mundo aberto com exploração",
-  "preco": 249.90,
-  "imagemUrl": "https://exemplo.com/imagens/zelda.jpg",
-  "categoria": {
-    "id": 1,
-    "nome": "Aventura",
-    "descricao": "Jogos com exploração e narrativa"
-  }
-}
-```
-
----
-
-## 🧠 Boas práticas utilizadas
-
-* Padrão RESTful
-* Separação por camadas (MVC)
-* Relacionamento OneToMany entre Categoria e Produto
-* Documentação e versionamento com Git
-* Tipagem correta (BigDecimal para preço, URL como `String` para imagem)
-
----
-
-## 🗂️ Branches recomendadas
-
-* `feature/crud-produto` – CRUD de Produto com preço e imagem
-* `feature/crud-categoria-relacionamento` – CRUD de Categoria e relacionamento com Produto
-
----
-
-## 👩💻 Autor
-
-Desenvolvido por [**Luiza**](https://github.com/luizaeg) como exercício prático de Spring Boot.
+## 9. Contato
+ 
+<br />
+ 
+Desenvolvido por [**Luiza**](https://github.com/luizaeg)
 Para dúvidas, sugestões ou colaborações, entre em contato via GitHub ou abra uma issue!
+
 
 
 
