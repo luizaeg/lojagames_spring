@@ -1,6 +1,28 @@
 
 # 🕹️ Loja de Games - Backend em Spring Boot
 
+<br />
+ 
+<div align="center">
+<img src="https://i.imgur.com/w8tTOuT.png" title="source: imgur.com" /> 
+</div>
+ 
+<br />
+ 
+<div align="center">
+<img src="https://img.shields.io/github/languages/top/rafaelq80/aulas_java_t82?style=flat-square" />
+<img src="https://img.shields.io/github/repo-size/rafaelq80/aulas_java_t82?style=flat-square" />
+<img src="https://img.shields.io/github/languages/count/rafaelq80/aulas_java_t82?style=flat-square" />
+<img src="https://img.shields.io/github/last-commit/rafaelq80/aulas_java_t82?style=flat-square" />
+<img src="https://img.shields.io/github/issues/rafaelq80/aulas_java_t82?style=flat-square" />
+<img src="https://img.shields.io/github/issues-pr/rafaelq80/aulas_java_t82?style=flat-square" />
+<img src="https://img.shields.io/badge/status-construção-yellow" alt="Status: Em Construção">
+ 
+</div>
+ 
+<br />
+
+
 Este projeto é um backend de uma loja de games, desenvolvido com **Spring Boot**, utilizando boas práticas de arquitetura com camadas de `model`, `repository` e `controller`.  
 Permite o gerenciamento de **produtos (jogos)** e **categorias**, com relacionamento entre eles, e suporte a preços e imagem dos produtos.
 
@@ -152,13 +174,11 @@ com.seuprojeto.lojagames
 
 ---
 
-## 🧑‍💻 Autor
+## 👩💻 Autor
 
 Desenvolvido por [**Luiza**](https://github.com/luizaeg) como exercício prático de Spring Boot.
 Para dúvidas, sugestões ou colaborações, entre em contato via GitHub ou abra uma issue!
 
-```
 
----
 
 
