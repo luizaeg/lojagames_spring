@@ -43,14 +43,15 @@ public class Produto {
     private BigDecimal preco;
     
 	@NotBlank(message = "A URL da imagem é obrigatória")
-	@Size(max = 1000, message = "A URL deve ter no máximo 1000 caracteres")
-	@Column(length = 1000)
+	@Size(max = 5000, message = "A URL deve ter no máximo 5000 caracteres")
+	@Column(length = 5000)
 	private String imagemUrl;
 	
 	@ManyToOne
     @JsonIgnoreProperties("produtos")
     private Categoria categoria;
 	
+		
 
 	public Long getId() {
 		return id;
@@ -100,6 +101,6 @@ public class Produto {
 		this.categoria = categoria;
 	}
 
-		
+			
 	
 }

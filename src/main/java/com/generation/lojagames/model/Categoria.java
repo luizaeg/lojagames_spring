@@ -16,6 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_categorias")
@@ -30,7 +31,11 @@ public class Categoria {
 	@Pattern(regexp = "^[^0-9].*", message = "O nome não pode ser apenas numérico")
 	private String nome;
 	
-	
+	@NotBlank(message = "Tipo é obrigatório!")
+	@Size(min = 5)
+	@Pattern(regexp = "^[^0-9].*", message = "O título não pode ser apenas numérico")
+	private String tipo;
+		
 	@Column(length = 255)
 	@NotBlank(message = "O Atributo Descrição é obrigatório e não pode ser vazio")
 	@Pattern(regexp = "^[^0-9].*", message = "A descrição não pode ser apenas numérica")
@@ -58,6 +63,26 @@ public class Categoria {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	
+	public String getTipo() {
+		return tipo;
+	}
+
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+
+	public List<Produto> getProduto() {
+		return produto;
+	}
+
+
+	public void setProduto(List<Produto> produto) {
+		this.produto = produto;
 	}
 
 
